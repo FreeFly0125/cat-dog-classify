@@ -1,39 +1,74 @@
-import { useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AnimalCard } from "../components";
 import { withMainlayout } from "../layout";
-import { MainContext } from "../context";
 import axios from "axios";
-import { IAnimalInfoResponse } from "../types";
+import { IAnimal, IAnimalInfoResponse } from "../types";
+import { url } from "inspector";
 
 export const Dashboard: React.FC = withMainlayout(() => {
-  const { animals, updateAnimals } =
-    useContext(MainContext);
+  const [curIndex, setCurIndex] = useState<number>(0);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [animals, setAnimals] = useState<IAnimal[]>([]);
+
+  const [countdown, setCountDown] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
+
+  const updateAnimals = (animal: IAnimal) => {
+    if (curIndex == animals.length) {
+      setAnimals((prev) => [...prev, animal]);
+    } else {
+      setAnimals((prev) =>
+        prev.map((item, index) => (index == curIndex ? animal : item))
+      );
+    }
+    setCurIndex((prev) => (prev + 1) % 10);
+  };
 
   const fetchData = async () => {
-    const animalInfo = await axios.get<IAnimalInfoResponse>(
+    setIsFetching(true);
+    const animalRes = await axios.get<IAnimalInfoResponse>(
       "http://localhost:8000/fetchimgs"
     );
+
     updateAnimals({
-      url: animalInfo.data.url,
-      type: animalInfo.data.type,
-      fetchtime: animalInfo.data.fetch_time,
+      url: animalRes.data.url,
+      type: animalRes.data.type,
+      fetchtime: animalRes.data.fetch_time,
     });
+
+    setIsFetching(false);
+    setTotalCount((prev) => prev + 1);
+    setCountDown(60 - Math.floor(animalRes.data.fetch_time));
   };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      fetchData();
-    }, 60000);
+      if (countdown == 0) {
+        fetchData();
+      }
+      setCountDown((prev) => (prev == 0 ? 60 : prev - 1));
+    }, 1000);
 
     return () => clearInterval(intervalId);
- }, [animals]);
+  }, [countdown]);
 
   return (
-    <div className="flex w-full justify-center pt-24">
-      <div className="grid grid-cols-5 justify-between gap-5 tablet:grid-cols-3 mobile:grid-cols-1">
-        {animals.map((animal) => (
-          <AnimalCard animal={animal} />
-        ))}
+    <div className="flex-col w-full justify-center p-12">
+      <div className="flex px-48 py-8 gap-20 justify-end">
+        <p className="text-black text-xl">Next Fetch: {countdown}</p>
+        <p className="text-black text-xl">Total Fetching: {totalCount}</p>
+      </div>
+      <div className="relative">
+        <div className={`grid grid-cols-5 justify-between gap-5 tablet:grid-cols-3 mobile:grid-cols-1 px-24 ${isFetching? 'blur' : ''}`}>
+          {animals.map((animal) => (
+            <AnimalCard animal={animal} />
+          ))}
+        </div>
+        {isFetching && (
+          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+            <p className="text-3xl max-w-max">Loading...</p>
+          </div>
+        )}
       </div>
     </div>
   );
