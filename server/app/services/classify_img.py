@@ -16,10 +16,6 @@ def classify_image(img_path):
     predictions = model.predict(processed_img) 
     results = decode_predictions(predictions)[0]
 
-    for key, value in store.ANIMAL_TYPES.items():
-        for predict_result in results:
-            breed = predict_result[1].split("_")[-1].lower()
-            if breed in value:
-                return key
+    pRes = store.TYPE_CLASSIFY_MODEL.predict([results[0][1]])[0]
 
-    return "Unknown"
+    return pRes

@@ -13,10 +13,8 @@ class Settings:
 class Store:
     IMAGE_STORE = []
 
-    ANIMAL_TYPES = {
-        'Dog': ['dog', 'bulldog', 'poodle', 'labrador', 'beagle', 'retriever', 'terrier', 'shepherd', 'husky', 'poodle', 'boxer', 'chihuahua', 'dachshund', 'german shepherd', 'golden retriever', 'pug', 'shih tzu', 'yorkshire terrier', 'boxer', 'bull terrier', 'dalmatian', 'great dane', 'maltese', 'pug', 'shih tzu', 'yorkshire terrier', 'boxer', 'bull terrier', 'dalmatian', 'great dane', 'maltese', 'bernard'],
-        'Cat': ['cat', 'persian', 'siamese', 'sphynx', 'maine coon', 'ragdoll', 'bengal', 'munchkin', 'scottish fold', 'burmese', 'siamese', 'maine coon', 'ragdoll', 'bengal', 'munchkin', 'scottish fold', 'burmese', 'lynx', 'tabby', 'egypt']
-    }
+    with open('./app/type_classification/type_classify.model', 'rb') as file:
+        TYPE_CLASSIFY_MODEL = pickle.load(file)
 
     def update_img_store(self, filepath):
         self.IMAGE_STORE.append(filepath)
