@@ -38,7 +38,7 @@ export const Dashboard: React.FC = withMainlayout(() => {
 
     setIsFetching(false);
     setTotalCount((prev) => prev + 1);
-    setCountDown(60 - Math.floor(animalRes.data.fetch_time));
+    setCountDown(60);
   };
 
   useEffect(() => {
@@ -53,23 +53,27 @@ export const Dashboard: React.FC = withMainlayout(() => {
   }, [countdown]);
 
   return (
-    <div className="flex-col w-full justify-center p-12">
-      <div className="flex px-48 py-8 gap-20 justify-end">
-        <p className="text-black text-xl">Next Fetch: {countdown}</p>
-        <p className="text-black text-xl">Total Fetching: {totalCount}</p>
-      </div>
-      <div className="relative">
-        <div className={`grid grid-cols-5 justify-between gap-5 tablet:grid-cols-3 mobile:grid-cols-1 px-24 ${isFetching? 'blur' : ''}`}>
+    <>
+      <div
+        className={`flex-col w-full justify-center p-12  ${
+          isFetching ? "blur" : ""
+        }`}
+      >
+        <div className="flex px-48 py-8 gap-20 justify-end">
+          <p className="text-black text-xl">Next Fetch: {countdown}</p>
+          <p className="text-black text-xl">Total Fetching: {totalCount}</p>
+        </div>
+        <div className="grid grid-cols-5 justify-between gap-5 tablet:grid-cols-3 mobile:grid-cols-1 px-24">
           {animals.map((animal) => (
             <AnimalCard animal={animal} />
           ))}
         </div>
-        {isFetching && (
-          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-            <p className="text-3xl max-w-max">Loading...</p>
-          </div>
-        )}
       </div>
-    </div>
+      {isFetching && (
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+          <p className="text-3xl max-w-max">Loading...</p>
+        </div>
+      )}
+    </>
   );
 });
