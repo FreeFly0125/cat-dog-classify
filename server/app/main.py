@@ -30,4 +30,7 @@ async def http_exception_handler(request, exc):
     )
 
 
+app.mount("/public", StaticFiles(directory=settings.PUBLIC_FOLDER), name="static")
+
+
 app.include_router(router=router)
