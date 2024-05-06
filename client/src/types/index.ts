@@ -2,6 +2,7 @@ export interface IAnimal {
   url: string;
   type: string;
   fetchtime: number;
+  isnew: boolean;
 }
 
 export interface IAnimalInfoResponse {

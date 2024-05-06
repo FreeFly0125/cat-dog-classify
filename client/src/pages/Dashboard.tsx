@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AnimalCard } from "../components";
+import { AnimalCard, LoadingSpinner } from "../components";
 import { withMainlayout } from "../layout";
 import axios from "axios";
 import { IAnimal, IAnimalInfoResponse } from "../types";
@@ -15,12 +15,14 @@ export const Dashboard: React.FC = withMainlayout(() => {
 
   const updateAnimals = (animal: IAnimal) => {
     if (curIndex == animals.length) {
-      setAnimals((prev) => [...prev, animal]);
+      const prevAnimals: IAnimal[] = animals.map((item) => ({...item, isnew: false}));
+      setAnimals((prev) => [...prevAnimals, animal]);
     } else {
       setAnimals((prev) =>
-        prev.map((item, index) => (index == curIndex ? animal : item))
+        prev.map((item, index) => (index == curIndex ? animal : {...item, isnew: false}))
       );
     }
+    console.log(animals);
     setCurIndex((prev) => (prev + 1) % 10);
   };
 
@@ -34,6 +36,7 @@ export const Dashboard: React.FC = withMainlayout(() => {
       url: animalRes.data.url,
       type: animalRes.data.type,
       fetchtime: animalRes.data.fetch_time,
+      isnew: true,
     });
 
     setIsFetching(false);
@@ -71,7 +74,7 @@ export const Dashboard: React.FC = withMainlayout(() => {
       </div>
       {isFetching && (
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-          <p className="text-3xl max-w-max">Loading...</p>
+          <LoadingSpinner />
         </div>
       )}
     </>
