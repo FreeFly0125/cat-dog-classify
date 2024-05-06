@@ -3,7 +3,6 @@ import { AnimalCard, LoadingSpinner } from "../components";
 import { withMainlayout } from "../layout";
 import axios from "axios";
 import { IAnimal, IAnimalInfoResponse } from "../types";
-import { url } from "inspector";
 
 export const Dashboard: React.FC = withMainlayout(() => {
   const [curIndex, setCurIndex] = useState<number>(0);
@@ -22,7 +21,6 @@ export const Dashboard: React.FC = withMainlayout(() => {
         prev.map((item, index) => (index == curIndex ? animal : {...item, isnew: false}))
       );
     }
-    console.log(animals);
     setCurIndex((prev) => (prev + 1) % 10);
   };
 
@@ -46,7 +44,7 @@ export const Dashboard: React.FC = withMainlayout(() => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (countdown == 0) {
+      if (countdown == 1) {
         fetchData();
       }
       setCountDown((prev) => (prev == 0 ? 60 : prev - 1));
