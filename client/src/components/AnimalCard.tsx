@@ -27,7 +27,7 @@ const InfoSpan: React.FC<InfoSpanProps> = ({ type, fetchtime }) => {
 };
 
 export const AnimalCard: React.FC<CardProps> = ({ animal }) => {
-  const server_url = "http://localhost:8000";
+  const server_url = process.env.REACT_APP_SERVER_URL;
   const imageUrl = `${server_url}${animal.url}`;
   return (
     <div className="flex flex-col p-2 rounded-lg border-2">

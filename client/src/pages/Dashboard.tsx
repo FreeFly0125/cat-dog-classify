@@ -26,9 +26,8 @@ export const Dashboard: React.FC = withMainlayout(() => {
 
   const fetchData = async () => {
     setIsFetching(true);
-    const animalRes = await axios.get<IAnimalInfoResponse>(
-      "http://localhost:8000/fetchimgs"
-    );
+    const fetch_url = `${process.env.REACT_APP_SERVER_URL}/fetchimgs`;
+    const animalRes = await axios.get<IAnimalInfoResponse>(fetch_url);
 
     updateAnimals({
       url: animalRes.data.url,
@@ -44,7 +43,7 @@ export const Dashboard: React.FC = withMainlayout(() => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (countdown == 1) {
+      if (countdown == 0) {
         fetchData();
       }
       setCountDown((prev) => (prev == 0 ? 60 : prev - 1));
