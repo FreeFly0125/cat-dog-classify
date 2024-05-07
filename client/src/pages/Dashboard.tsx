@@ -26,7 +26,8 @@ export const Dashboard: React.FC = withMainlayout(() => {
 
   const fetchData = async () => {
     setIsFetching(true);
-    const fetch_url = `${process.env.REACT_APP_SERVER_URL}/fetchimgs`;
+    const server_url = process.env.REACT_APP_SERVER_URL || "http://localhost:8000";
+    const fetch_url = `${server_url}/fetchimgs`;
     const animalRes = await axios.get<IAnimalInfoResponse>(fetch_url);
 
     updateAnimals({
