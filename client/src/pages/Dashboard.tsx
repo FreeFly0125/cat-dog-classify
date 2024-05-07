@@ -3,6 +3,7 @@ import { AnimalCard, LoadingSpinner } from "../components";
 import { withMainlayout } from "../layout";
 import axios from "axios";
 import { IAnimal, IAnimalInfoResponse } from "../types";
+import { toast } from "react-toastify";
 
 export const Dashboard: React.FC = withMainlayout(() => {
   const [curIndex, setCurIndex] = useState<number>(0);
@@ -28,17 +29,22 @@ export const Dashboard: React.FC = withMainlayout(() => {
     setIsFetching(true);
     const server_url = process.env.REACT_APP_SERVER_URL || "http://localhost:8000";
     const fetch_url = `${server_url}/fetchimgs`;
-    const animalRes = await axios.get<IAnimalInfoResponse>(fetch_url);
+    try {
+      const animalRes = await axios.get<IAnimalInfoResponse>(fetch_url);
 
-    updateAnimals({
-      url: animalRes.data.url,
-      type: animalRes.data.type,
-      fetchtime: animalRes.data.fetch_time,
-      isnew: true,
-    });
+      updateAnimals({
+        url: animalRes.data.url,
+        type: animalRes.data.type,
+        fetchtime: animalRes.data.fetch_time,
+        isnew: true,
+      });
+
+      setTotalCount((prev) => prev + 1);
+    } catch (err) {
+      toast.error("Failed to fetch animal Data.\nTry again later.");
+    };
 
     setIsFetching(false);
-    setTotalCount((prev) => prev + 1);
     setCountDown(60);
   };
 
