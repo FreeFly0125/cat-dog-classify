@@ -1,7 +1,7 @@
 # Animal Classification
 
-## Assignment Overview: 
-You will work with an API endpoint that generates images of cats and dogs as Base64-encoded files. Your task is to develop an application that accomplishes the following:
+## Overview: 
+You work with an API endpoint that generates images of cats and dogs as Base64-encoded files. The application accomplishes the following:
 
 - Displays the last 10 images of cats and dogs, each tagged with the retrieval time, organized in two separate rows or columns.
 - Automatically fetches and updates these images in real-time, even if the page isn't actively being viewed.
@@ -9,13 +9,6 @@ You will work with an API endpoint that generates images of cats and dogs as Bas
 - Includes a countdown for the next image request and a counter for the total number of images retrieved.
 - Image classification should not rely on external APIs. Any approach, like a pre-trained ML model, is allowed as long as it is used locally.
 - Please note that the rate limit is set to 1 request per minute.
-
-
-### Technical Requirements:
-
-- The backend should be implemented using Python frameworks such as FastAPI or Flask.
-- The frontend should employ JavaScript frameworks; options like React or Next.js are suggested.
-- The application should either be deployable via a public link or include comprehensive instructions for local deployment.
 
 #### Image Data Endpoint: `https://api.exactly.ai/v0/careers/cat-or-dog/69b31be8-8cf0-4697-b738-94bc13e878e0/`
 
